@@ -1,10 +1,4 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -333,7 +327,6 @@ and open the template in the editor.
             display: block;
             width: 100%;
             padding: 1rem;
-            background-color: #3498db;
             color: white;
             border: none;
             border-radius: 5px;
@@ -344,8 +337,17 @@ and open the template in the editor.
             transition: background-color 0.3s;
         }
         
-        .checkout-btn:hover {
-            background-color: #2980b9;
+        /* Estilo específico para el botón de WhatsApp */
+        #whatsapp-checkout {
+            background-color: #25D366;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        #whatsapp-checkout:hover {
+            background-color: #128C7E;
         }
         
         /* Responsive */
@@ -367,6 +369,15 @@ and open the template in the editor.
             
             .hero p {
                 font-size: 1rem;
+            }
+            
+            .cart-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .cart-item-quantity {
+                margin-top: 10px;
             }
         }
     </style>
@@ -392,7 +403,7 @@ and open the template in the editor.
 
     <!-- Hero Section -->
     <section class="hero">
-        <h1>Bienvenido , que quieres el dia de hoy?</h1>
+        <h1>Bienvenido, ¿qué quieres el día de hoy?</h1>
         <p>Descubre los mejores productos al mejor precio. Envíos rápidos a todo el país y CONTRA ENTREGA!!!.</p>
         <a href="#products" class="btn">Ver Productos</a>
     </section>
@@ -426,7 +437,6 @@ and open the template in the editor.
                 <ul>
                     <li>Email: atencionventaexpress@gmail.com</li>
                     <li>Teléfono: 310 268 7126</li>
-                    
                 </ul>
             </div>
         </div>
@@ -446,20 +456,10 @@ and open the template in the editor.
             <div class="cart-total" id="cart-total">
                 Total: $0.00
             </div>
-            <div class="Proceder al Pago">
-            </a>
+            <button class="checkout-btn" id="whatsapp-checkout">
+                <span>📱</span> Proceder al Pago por WhatsApp
+            </button>
         </div>
-
-            
-            <button class="checkout-btn">Proceder al Pago</button>
-     <a 
-                href="https://wa.me/573102687126?text=¡Hola!%20Quiero%20comprar%20los%20Zapatos%20Deportivos" 
-                class="btn-whatsapp" 
-                target="_blank"
-            >
-                 Proceder al Pago           
-         </a>
-        
     </div>
 
     <script>
@@ -520,6 +520,7 @@ and open the template in the editor.
         const closeModal = document.getElementById('close-modal');
         const cartItems = document.getElementById('cart-items');
         const cartTotal = document.getElementById('cart-total');
+        const whatsappCheckout = document.getElementById('whatsapp-checkout');
 
         // Mostrar productos
         function displayProducts() {
@@ -679,6 +680,30 @@ and open the template in the editor.
             updateCart();
             displayCart();
         }
+        
+        // Configurar botón de WhatsApp
+        whatsappCheckout.addEventListener('click', () => {
+            if (cart.length === 0) {
+                alert('Tu carrito está vacío');
+                return;
+            }
+            
+            // Crear mensaje con los productos
+            let message = '¡Hola! Quiero comprar los siguientes productos:%0A%0A';
+            
+            cart.forEach(item => {
+                message += `- ${item.name} (${item.quantity} x $${item.price.toFixed(2)})%0A`;
+            });
+            
+            message += `%0ATotal: $${cart.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2)}`;
+            message += '%0A%0A¿Cómo puedo proceder con el pago y envío?';
+            
+            // Abrir WhatsApp
+            window.open(`https://wa.me/573102687126?text=${message}`, '_blank');
+            
+            // Cerrar el modal después de enviar
+            cartModal.style.display = 'none';
+        });
         
         // Cargar carrito desde localStorage al iniciar
         function loadCart() {
