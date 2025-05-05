@@ -357,6 +357,47 @@
             background-color: #128C7E;
         }
         
+        /* Alertas personalizadas */
+        .custom-alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 2000;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            display: none;
+        }
+        
+        .custom-alert h3 {
+            color: #e74c3c;
+            margin-bottom: 1rem;
+        }
+        
+        .custom-alert p {
+            margin-bottom: 1.5rem;
+        }
+        
+        .custom-alert-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .custom-alert-btn:hover {
+            background-color: #2980b9;
+        }
+        
         /* Responsive */
         @media (max-width: 768px) {
             header {
@@ -469,6 +510,13 @@
         </div>
     </div>
 
+    <!-- Alerta personalizada -->
+    <div class="custom-alert" id="custom-alert">
+        <h3>Carrito Vacío</h3>
+        <p>No has seleccionado ningún producto todavía. Por favor, añade productos al carrito antes de proceder al pago.</p>
+        <button class="custom-alert-btn" id="close-alert">Entendido</button>
+    </div>
+
     <script>
         // Datos de productos
         const products = [
@@ -528,6 +576,8 @@
         const cartItems = document.getElementById('cart-items');
         const cartTotal = document.getElementById('cart-total');
         const whatsappCheckout = document.getElementById('whatsapp-checkout');
+        const customAlert = document.getElementById('custom-alert');
+        const closeAlert = document.getElementById('close-alert');
 
         // Mostrar productos
         function displayProducts() {
@@ -540,7 +590,6 @@
                 productCard.innerHTML = `
                     <img src="${product.image}" alt="${product.name}" class="product-image">
                     <div class="product-info">
-                        <h3 class="product-title">${product.name}</h3>
                         <p class="product-price">$${product.price.toFixed(2)}</p>
                         <p class="product-description">${product.description}</p>
                         <button class="add-to-cart" data-id="${product.id}">Añadir al carrito</button>
@@ -690,7 +739,8 @@
         // Configurar botón de WhatsApp
         whatsappCheckout.addEventListener('click', () => {
             if (cart.length === 0) {
-                alert('Tu carrito está vacío');
+                // Mostrar alerta personalizada en lugar de alert() nativo
+                customAlert.style.display = 'block';
                 return;
             }
             
@@ -709,6 +759,11 @@
             
             // Cerrar el modal después de enviar
             cartModal.style.display = 'none';
+        });
+        
+        // Cerrar alerta personalizada
+        closeAlert.addEventListener('click', () => {
+            customAlert.style.display = 'none';
         });
         
         // Cargar carrito desde localStorage al iniciar
@@ -733,6 +788,9 @@
         window.addEventListener('click', (e) => {
             if (e.target === cartModal) {
                 cartModal.style.display = 'none';
+            }
+            if (e.target === customAlert) {
+                customAlert.style.display = 'none';
             }
         });
         
