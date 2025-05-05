@@ -165,12 +165,14 @@
         .product-title {
             font-size: 1.2rem;
             margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #2c3e50;
         }
         
         .product-price {
             font-size: 1.3rem;
             font-weight: bold;
-            color: #2c3e50;
+            color: #e74c3c;
             margin-bottom: 1rem;
         }
         
@@ -372,6 +374,12 @@
             max-width: 400px;
             width: 90%;
             display: none;
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-50%, -60%); }
+            to { opacity: 1; transform: translate(-50%, -50%); }
         }
         
         .custom-alert h3 {
@@ -590,6 +598,7 @@
                 productCard.innerHTML = `
                     <img src="${product.image}" alt="${product.name}" class="product-image">
                     <div class="product-info">
+                        <h3 class="product-title">${product.name}</h3>
                         <p class="product-price">$${product.price.toFixed(2)}</p>
                         <p class="product-description">${product.description}</p>
                         <button class="add-to-cart" data-id="${product.id}">Añadir al carrito</button>
@@ -665,7 +674,7 @@
                 
                 cartItem.innerHTML = `
                     <div class="cart-item-info">
-                        <img src="${item.image}" alt="${item.name}" class="cart-item-image">
+                        <img src="${item.image}" alt="Producto" class="cart-item-image">
                         <div>
                             <p>$${item.price.toFixed(2)}</p>
                         </div>
@@ -739,7 +748,6 @@
         // Configurar botón de WhatsApp
         whatsappCheckout.addEventListener('click', () => {
             if (cart.length === 0) {
-                // Mostrar alerta personalizada en lugar de alert() nativo
                 customAlert.style.display = 'block';
                 return;
             }
